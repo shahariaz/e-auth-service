@@ -1,19 +1,43 @@
 {
-  "name": "auth-service",
-  "version": "1.0.0",
-  "description": "The user management service",
-  "main": "index.js",
-  "scripts": {
-    "dev": "node src/server.js",
-    "format:fix": "prettier . --write",
-    "format:check": "prettier . --check",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Shahariaz.info@gmail.com",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^22.9.1",
-    "prettier": "3.3.3",
-    "typescript": "^5.6.3"
-  }
+    "name": "auth-service",
+    "version": "1.0.0",
+    "description": "The user management service",
+    "main": "src/server.ts",
+    "scripts": {
+        "dist": "npx tsc",
+        "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
+        "start": "cross-env NODE_ENV=production node dist/server.js",
+        "format:fix": "prettier . --write",
+        "format:check": "prettier . --check",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "prepare": "husky"
+    },
+    "author": "Shahariaz.info@gmail.com",
+    "license": "ISC",
+    "lint-staged": {
+        "*ts": [
+            "npm run lint:fix",
+            "npm run format:fix"
+        ]
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.6.0",
+        "@commitlint/config-conventional": "^19.6.0",
+        "@eslint/js": "^9.15.0",
+        "@types/node": "^22.9.1",
+        "@typescript-eslint/eslint-plugin": "^8.15.0",
+        "@typescript-eslint/parser": "^8.15.0",
+        "eslint": "^9.15.0",
+        "husky": "^9.1.7",
+        "nodemon": "^3.1.7",
+        "prettier": "3.3.3",
+        "typescript-eslint": "^8.15.0"
+    },
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "eslint-config-prettier": "^9.1.0",
+        "lint-staged": "^15.2.10",
+        "ts-node": "^10.9.2"
+    }
 }
