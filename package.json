@@ -11,6 +11,7 @@
         "format:check": "prettier . --check",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "test": "jest --watch --runInBand",
         "prepare": "husky"
     },
     "author": "Shahariaz.info@gmail.com",
@@ -27,14 +28,19 @@
         "@eslint/js": "^9.15.0",
         "@types/express": "^5.0.0",
         "@types/http-errors": "^2.0.4",
+        "@types/jest": "^29.5.14",
         "@types/node": "^22.9.1",
         "@types/source-map-support": "^0.5.10",
+        "@types/supertest": "^6.0.2",
         "@typescript-eslint/eslint-plugin": "^8.15.0",
         "@typescript-eslint/parser": "^8.15.0",
         "eslint": "^9.15.0",
         "husky": "^9.1.7",
+        "jest": "^29.7.0",
         "nodemon": "^3.1.7",
         "prettier": "3.3.3",
+        "supertest": "^7.0.0",
+        "ts-jest": "^29.2.5",
         "typescript-eslint": "^8.15.0"
     },
     "dependencies": {
