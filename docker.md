@@ -1,18 +1,35 @@
-# Docker Commend
+# Docker Commands
 
-Docker Build
+## Docker Build
+
+```sh
 docker run --rm -it -v ${PWD}:/usr/src/app -v /usr/src/app/node_modules --env-file ${PWD}/.env.development -p 5501:5501 -e NODE_ENV=development auth-service:dev
+```
 
-## Run PgSQL with Docker
+## Run PostgreSQL with Docker
 
-step 1: docker pull postgres
+### Step 1: Pull PostgreSQL Image
 
-### Creating Presistent volumes for ensure that the data remains intect even if the container stops or crashes.
+```sh
+docker pull postgres
+```
 
-step 2: docker volume create authpgdata
+### Step 2: Create Persistent Volumes
 
-#### for cheack Docker volume
+Creating persistent volumes ensures that the data remains intact even if the container stops or crashes.
 
--> docker volume ls
+```sh
+docker volume create authpgdata
+```
 
-step 3: docker run --rm --name authpg-container -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -v authpgdata:/var/lib/postgresql/data -p 5432:5432 -d postgres
+#### Check Docker Volumes
+
+```sh
+docker volume ls
+```
+
+### Step 3: Run PostgreSQL Container
+
+```sh
+docker run --rm --name authpg-container -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -v authpgdata:/var/lib/postgresql/data -p 5432:5432 -d postgres
+```
