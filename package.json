@@ -11,7 +11,8 @@
         "format:check": "prettier . --check",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "test": "jest --watch --runInBand",
+        "test": "cross-env NODE_ENV=test jest --watch --runInBand",
+        "typeorm": "typeorm-ts-node-commonjs",
         "prepare": "husky"
     },
     "author": "Shahariaz.info@gmail.com",
