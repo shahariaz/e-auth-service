@@ -78,6 +78,45 @@ describe('POST /auth/register', () => {
             expect(users).toHaveLength(1)
             expect(users[0].email).toEqual('shahara@gmail.com')
         })
+        it('should return the user in the response', async () => {
+            //AAA--Arrange Act Assert
+            //Arrange
+            const userData = {
+                firstName: 'Shaharaiz',
+                lastName: 'Ahammed',
+                email: 'shahriaz@gmail.com',
+                password: '123456'
+            }
+            //Act
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+            //Assert
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+            expect(users).toHaveLength(1)
+            expect(users[0].email).toEqual('shahriaz@gmail.com')
+        })
+        it('should return an id of the created user', async () => {
+            //AAA--Arrange Act Assert
+            //Arrange
+            const userData = {
+                firstName: 'Shaharaiz',
+                lastName: 'Ahammed',
+                email: 'shahriaz@gmail.com',
+                password: '123456'
+            }
+            //act
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+            //Assert
+
+            expect(response.body.data).toHaveProperty('id')
+            const repository = connection.getRepository(User)
+            const users = await repository.find()
+            expect((response.body.data as Record<string, string>).id).toBe(users[0].id)
+        })
     })
 
     describe('Fields Are Missing', () => {
