@@ -11,6 +11,8 @@ app.get('/', (_, res) => {
     httpResponse(_, res, 200, 'Hello to Auth-Services')
 })
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 //Routes
 app.use('/auth', authRoute)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

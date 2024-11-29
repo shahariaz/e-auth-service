@@ -1,4 +1,5 @@
 // @ts-check
+// @ts-check
 
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
@@ -12,12 +13,12 @@ export default tseslint.config({
         }
     },
     files: ['**/*.ts'],
+    ignores: ['tests/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+    // @ts-ignore
     extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
     rules: {
         'no-console': 'error',
         'no-useless-catch': 0,
-        '@typescript-eslint/await-thenable': 'off',
-        '@typescript-eslint/no-misused-promises': 'off',
         quotes: ['error', 'single', { allowTemplateLiterals: true }]
     }
 })
