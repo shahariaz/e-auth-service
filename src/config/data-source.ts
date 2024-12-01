@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { User } from '../entity/User'
+
 import { config } from './config'
 
 export const AppDataSource = new DataSource({
@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
     //use for development
     synchronize: config.NODE_ENV === 'development' || config.NODE_ENV === 'test',
     logging: false,
-    entities: [User],
+    entities: ['src/entity/*.{ts,js}'],
     migrations: [],
     subscribers: []
 })

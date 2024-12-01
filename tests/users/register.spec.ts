@@ -3,8 +3,9 @@ import app from '../../src/app'
 import { DataSource } from 'typeorm'
 
 import { AppDataSource } from '../../src/config/data-source'
-import { truncateTables } from '../utils'
+
 import { User } from '../../src/entity/User'
+import { truncateTables } from '../utils/index'
 
 describe('POST /auth/register', () => {
     let connection: DataSource
