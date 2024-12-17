@@ -12,10 +12,10 @@ export class UserService {
         this.userRepository = userRepository
         this.logger = logger
     }
-    async createUser({ firstName, lastName, email, password }: UserData) {
+    async createUser({ firstName, lastName, email, password, role }: UserData) {
         try {
-            const user = await this.userRepository.save({ firstName, lastName, email, password })
-            this.logger.info('User Created Successfully', user.id)
+            const user = await this.userRepository.save({ firstName, lastName, email, password, role })
+
             return user
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {

@@ -32,7 +32,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Shaharaiz',
                 lastName: 'Ahammed',
                 email: 'shahara@gmail.com',
-                password: '123456'
+                password: '123456',
+                role: 'customer'
             }
             // Act
             const response = await request(app as any)
@@ -50,7 +51,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Shaharaiz',
                 lastName: 'Ahammed',
                 email: 'shahara@gmail.com',
-                password: '123456'
+                password: '123456',
+                role: 'customer'
             }
             // Act
             const response = await request(app as any)
@@ -67,7 +69,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Shaharaiz',
                 lastName: 'Ahammed',
                 email: 'shahara@gmail.com',
-                password: '123456'
+                password: '123456',
+                role: 'customer'
             }
             // Act
             await request(app as any)
@@ -86,7 +89,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Shaharaiz',
                 lastName: 'Ahammed',
                 email: 'shahriaz@gmail.com',
-                password: '123456'
+                password: '123456',
+                role: 'customer'
             }
             //Act
             const response = await request(app as any)
@@ -104,8 +108,9 @@ describe('POST /auth/register', () => {
             const userData = {
                 firstName: 'Shaharaiz',
                 lastName: 'Ahammed',
-                email: 'shahriaz@gmail.com',
-                password: '123456'
+                email: 'shahara@gmail.com',
+                password: '123456',
+                role: 'customer'
             }
             //act
             const response = await request(app as any)
@@ -117,6 +122,27 @@ describe('POST /auth/register', () => {
             const repository = connection.getRepository(User)
             const users = await repository.find()
             expect((response.body.data as Record<string, string>).id).toBe(users[0].id)
+        })
+        it('should return user role', async () => {
+            //AAA-- Arrange Act Assert
+            //Arrange
+            const userData = {
+                firstName: 'Shaharaiz',
+                lastName: 'Ahammed',
+                email: 'shahariaz@gmail.com',
+                password: '123456',
+                role: 'customer'
+            }
+            //Act
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+            //Assert
+            expect(response.body.data).toHaveProperty('role')
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+            expect(users[0]).toHaveProperty('role')
+            expect(users[0].role).toBe('customer')
         })
     })
 

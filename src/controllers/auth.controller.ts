@@ -15,15 +15,9 @@ export class Auth {
     }
     public async register(req: RegisterUserRequest, res: Response, next: NextFunction) {
         try {
-            const { firstName, lastName, email, password } = req.body
-            this.logger.debug('New request to register a user', {
-                firstName,
-                lastName,
-                email,
-                password: '********'
-            })
-            const user = await this.userService.createUser({ firstName, lastName, email, password })
-            this.logger.info('Registering User', { id: user.id })
+            const { firstName, lastName, email, password, role } = req.body
+
+            const user = await this.userService.createUser({ firstName, lastName, email, password, role })
 
             httpResponse(req, res, 201, 'User Registered Successfully', user)
         } catch (error) {

@@ -4,6 +4,7 @@ module.exports = {
     preset: 'ts-jest',
     verbose: true,
     transform: {
-        '^.+.tsx?$': ['ts-jest', {}]
-    }
+        '^.+\\.tsx?$': ['ts-jest', {}]
+    },
+    testMatch: ['**/tests/**/*.spec.ts']
 }
