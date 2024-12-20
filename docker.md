@@ -31,5 +31,5 @@ docker volume ls
 ### Step 3: Run PostgreSQL Container
 
 ```sh
-docker run --rm --name authpg-container -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -v authpgdata:/var/lib/postgresql/data -p 5432:5432 -d postgres
+docker run --rm --name testpg-container -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -v testpg:/var/lib/postgresql/data -p 5435:5432 -d postgres
 ```

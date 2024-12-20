@@ -27,6 +27,7 @@
         "@commitlint/cli": "^19.6.0",
         "@commitlint/config-conventional": "^19.6.0",
         "@eslint/js": "^9.15.0",
+        "@types/bcrypt": "^5.0.2",
         "@types/express": "^5.0.0",
         "@types/http-errors": "^2.0.4",
         "@types/jest": "^29.5.14",
@@ -46,6 +47,7 @@
     },
     "dependencies": {
         "auth-service": "file:",
+        "bcrypt": "^5.1.1",
         "colorette": "^2.0.20",
         "cross-env": "^7.0.3",
         "dotenv-flow": "^4.1.0",

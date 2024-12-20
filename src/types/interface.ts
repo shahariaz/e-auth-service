@@ -8,7 +8,7 @@ interface UserData {
     lastName: string
     email: string
     password: string
-    role: UserRole
+    role?: UserRole
 }
 interface RegisterUserRequest extends Request {
     body: UserData
