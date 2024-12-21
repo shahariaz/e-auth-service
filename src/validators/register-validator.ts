@@ -1,2 +1,8 @@
-import { body } from 'express-validator'
-export default [body('email').notEmpty()]
+import { checkSchema } from 'express-validator'
+export default checkSchema({
+    email: {
+        errorMessage: 'Please enter your email address',
+        notEmpty: true,
+        trim: true
+    }
+})
