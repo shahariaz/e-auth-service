@@ -53,6 +53,7 @@
         "dotenv-flow": "^4.1.0",
         "eslint-config-prettier": "^9.1.0",
         "express": "^4.21.1",
+        "express-validator": "^7.0.0",
         "http-errors": "^2.0.0",
         "lint-staged": "^15.2.10",
         "pg": "^8.13.1",
