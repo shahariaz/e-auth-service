@@ -5,8 +5,9 @@ import { DataSource, DeepPartial } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 
 import { User } from '../../src/entity/User'
-import { truncateTables } from '../utils/index'
+import { isJwt, truncateTables } from '../utils/index'
 import { Roles } from '../../src/constant/application'
+import { cookie } from 'express-validator'
 
 describe('POST /auth/register', () => {
     let connection: DataSource
@@ -188,6 +189,43 @@ describe('POST /auth/register', () => {
             expect(response.statusCode).toBe(400)
             expect(users).toHaveLength(1)
         })
+        it('should return the access token and refresh token inside a cookie', async () => {
+            //AAA--Arrange Act Assert
+            //Arrange
+            let accessToken: string | null = null
+            let refreshToken: string | null = null
+            const userData = {
+                firstName: 'Shaharaiz',
+                lastName: 'Ahammed',
+                email: 'shahara@gmail.com',
+                password: '123456',
+                role: 'customer'
+            }
+            //Act
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+
+            interface Headers {
+                ['set-cookie']: string[]
+            }
+            //Assert
+            const users = await connection.getRepository(User).find()
+            const cookies = (response.headers as unknown as Headers)['set-cookie'] || []
+
+            cookies.forEach((cookie) => {
+                if (cookie.startsWith('accessToken=')) {
+                    accessToken = cookie.split(';')[0].split('=')[1]
+                }
+                if (cookie.startsWith('refreshToken=')) {
+                    refreshToken = cookie.split(';')[0].split('=')[1]
+                }
+            })
+            expect(accessToken).not.toBeNull()
+            expect(refreshToken).not.toBeNull()
+            expect(isJwt(accessToken)).toBeTruthy()
+            expect(isJwt(refreshToken)).toBeTruthy()
+        })
     })
 
     describe('Fields Are Missing', () => {
@@ -227,7 +265,7 @@ describe('POST /auth/register', () => {
             // Assert
             const userRepo = connection.getRepository(User)
             const users = await userRepo.find()
-            console.log(users)
+
             expect(users[0].email).toBe('shahara@gmail.com')
         })
     })
