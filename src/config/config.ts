@@ -8,6 +8,7 @@ class Config {
     public DB_USER: string | undefined
     public DB_PASSWORD: string | undefined
     public DB_NAME: string | undefined
+    public SECRET_KEY: string | undefined
     constructor() {
         this.PORT = parseInt(process.env.PORT as string)
         this.NODE_ENV = process.env.NODE_ENV
@@ -16,6 +17,7 @@ class Config {
         this.DB_USER = process.env.DB_USER
         this.DB_PASSWORD = process.env.DB_PASSWORD
         this.DB_NAME = process.env.DB_NAME
+        this.SECRET_KEY = process.env.SECRET_KEY
         this.validateConfig()
     }
     public validateConfig(): void {
