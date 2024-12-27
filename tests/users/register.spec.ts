@@ -1,13 +1,11 @@
 import request from 'supertest'
 import app from '../../src/app'
 import { DataSource, DeepPartial } from 'typeorm'
-
 import { AppDataSource } from '../../src/config/data-source'
-
 import { User } from '../../src/entity/User'
 import { isJwt, truncateTables } from '../utils/index'
 import { Roles } from '../../src/constant/application'
-import { cookie } from 'express-validator'
+import { RefreshToken } from '../../src/entity/RefreshToken'
 
 describe('POST /auth/register', () => {
     let connection: DataSource
@@ -15,7 +13,8 @@ describe('POST /auth/register', () => {
         connection = await AppDataSource.initialize()
     })
     beforeEach(async () => {
-        await truncateTables(connection)
+        await connection.dropDatabase()
+        await connection.synchronize()
     })
     afterAll(async () => {
         await connection.destroy()
@@ -225,9 +224,34 @@ describe('POST /auth/register', () => {
 
             expect(accessToken).not.toBeNull()
 
-            //expect(refreshToken).not.toBeNull()
+            expect(refreshToken).not.toBeNull()
             expect(isJwt(accessToken)).toBeTruthy()
-            //expect(isJwt(refreshToken)).toBeTruthy()
+            expect(isJwt(refreshToken)).toBeTruthy()
+        })
+        it('should store the refresh token in the database', async () => {
+            //AAA-- Arrange Act Assert
+            //Arrange
+
+            const userData = {
+                firstName: 'Shaharaiz',
+                lastName: 'Ahammed',
+                email: 'shahara@gmail.com',
+                password: '123456',
+                role: 'customer'
+            }
+            //Act
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+            //Assert
+            const refreshTokenRepo = connection.getRepository(RefreshToken)
+            // const refreshToken = await refreshTokenRepo.find()
+
+            const token = await refreshTokenRepo
+                .createQueryBuilder('refreshToken')
+                .where('refreshToken.userId = :userId', { userId: (response.body.data as Record<string, string>).id })
+                .getMany()
+            expect(token).toHaveLength(1)
         })
     })
 

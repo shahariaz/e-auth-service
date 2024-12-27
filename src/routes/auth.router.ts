@@ -7,9 +7,11 @@ import logger from '../config/logger'
 
 import { NextFunction, Response, Request } from 'express'
 import registerValidator from '../validators/register-validator'
+import { TokenService } from '../services/TokenService'
 const router = express.Router()
 const userRepository = AppDataSource.getRepository(User)
 const userService = new UserService(userRepository, logger)
-const auth = new Auth(userService, logger)
+const tokenService = new TokenService()
+const auth = new Auth(userService, logger, tokenService)
 router.post('/register', registerValidator, (req: Request, res: Response, next: NextFunction) => auth.register(req, res, next))
 export default router
