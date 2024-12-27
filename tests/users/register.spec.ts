@@ -3,7 +3,7 @@ import app from '../../src/app'
 import { DataSource, DeepPartial } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 import { User } from '../../src/entity/User'
-import { isJwt, truncateTables } from '../utils/index'
+import { isJwt } from '../utils/index'
 import { Roles } from '../../src/constant/application'
 import { RefreshToken } from '../../src/entity/RefreshToken'
 
