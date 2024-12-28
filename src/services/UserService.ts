@@ -34,4 +34,18 @@ export class UserService {
             throw error
         }
     }
+    async getUserByEmail(email: string) {
+        const user = await this.userRepository.findOne({
+            where: { email }
+        })
+        if (!user) {
+            const error = createHttpError(404, 'User not found')
+            throw error
+        }
+        return user
+    }
+    async comparePassword(password: string, userPassword: string) {
+        const isMatch = await bcrypt.compare(password, userPassword)
+        return isMatch
+    }
 }

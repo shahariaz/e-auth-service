@@ -8,16 +8,6 @@ export default checkSchema({
             errorMessage: 'Please enter a valid email address'
         }
     },
-    firstName: {
-        errorMessage: 'Please enter your first name',
-        notEmpty: true,
-        trim: true
-    },
-    lastName: {
-        errorMessage: 'Please enter your last name',
-        notEmpty: true,
-        trim: true
-    },
     password: {
         trim: true,
         errorMessage: 'Please enter your password',
