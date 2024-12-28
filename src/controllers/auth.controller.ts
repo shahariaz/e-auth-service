@@ -110,6 +110,8 @@ export class Auth {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true
             })
+            this.logger.info('User has been logged in', { id: user.id })
+            httpResponse(req, res, 200, 'User Logged In Successfully', user)
         } catch (error) {
             this.logger.error('Error in login method', error)
             next(error)
