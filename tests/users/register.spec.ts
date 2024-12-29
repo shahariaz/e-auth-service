@@ -41,7 +41,7 @@ describe('POST /auth/register', () => {
                 .post('/auth/register')
                 .send(userData)
             // Assert
-            console.log('response', response.body)
+
             expect(response.statusCode).toBe(201)
         })
 

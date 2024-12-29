@@ -36,7 +36,6 @@ describe('Post auth/login', () => {
                 password: hashedPassword,
                 role: Roles.CUSTOMER as UserRole
             })
-            console.log(user)
 
             //Act
             const response = await request(app as any)

@@ -60,8 +60,9 @@ export class Auth {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production'
             })
+            this.logger.info('User has been Registerd ', { id: user.id })
 
-            httpResponse(req, res, 201, 'User Registered Successfully', user)
+            httpResponse(req, res, 201, 'User Registered Successfully', { ...user, password: undefined })
         } catch (error) {
             this.logger.error('Error in register method', error)
             next(error)
@@ -111,7 +112,7 @@ export class Auth {
                 httpOnly: true
             })
             this.logger.info('User has been logged in', { id: user.id })
-            httpResponse(req, res, 200, 'User Logged In Successfully', user)
+            httpResponse(req, res, 200, 'User Logged In Successfully', { ...user, password: undefined })
         } catch (error) {
             this.logger.error('Error in login method', error)
             next(error)
@@ -124,7 +125,7 @@ export class Auth {
                 id: authUser.sub
             })
             const user = await this.userService.findById(Number(authUser.sub))
-            httpResponse(req, res, 200, 'User Details', user)
+            httpResponse(req, res, 200, 'User Details', { ...user, password: undefined })
         } catch (error) {
             this.logger.error('Error in self method', error)
             next(error)
