@@ -117,4 +117,13 @@ export class Auth {
             next(error)
         }
     }
+    public self(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = req
+            httpResponse(req, res, 200, 'User Details', user)
+        } catch (error) {
+            this.logger.error('Error in self method', error)
+            next(error)
+        }
+    }
 }
