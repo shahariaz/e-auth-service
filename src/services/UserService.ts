@@ -48,4 +48,14 @@ export class UserService {
         const isMatch = await bcrypt.compare(password, userPassword)
         return isMatch
     }
+    async findById(id: number) {
+        const user = await this.userRepository.findOne({
+            where: { id }
+        })
+        if (!user) {
+            const error = createHttpError(404, 'User not found')
+            throw error
+        }
+        return user
+    }
 }

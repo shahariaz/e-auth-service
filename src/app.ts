@@ -4,7 +4,7 @@ import authRoute from './routes/auth.router'
 import logger from './config/logger'
 import { HttpError } from 'http-errors'
 import httpResponse from './util/httpResponse'
-
+import cookieParser from 'cookie-parser'
 const app = express()
 
 app.get('/', (_, res) => {
@@ -13,6 +13,7 @@ app.get('/', (_, res) => {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 //Routes
 app.use('/auth', authRoute)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

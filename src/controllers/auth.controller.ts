@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from 'express'
 import httpResponse from '../util/httpResponse'
-import { RegisterUserRequest } from '../types/interface'
+import { AuthRequest, RegisterUserRequest } from '../types/interface'
 import { UserService } from '../services/UserService'
 import { Logger } from 'winston'
 import { validationResult } from 'express-validator'
@@ -117,9 +117,13 @@ export class Auth {
             next(error)
         }
     }
-    public self(req: Request, res: Response, next: NextFunction) {
+    public async self(req: AuthRequest, res: Response, next: NextFunction) {
         try {
-            const user = req
+            const authUser = req.auth
+            this.logger.debug('New request to get user details', {
+                id: authUser.sub
+            })
+            const user = await this.userService.findById(Number(authUser.sub))
             httpResponse(req, res, 200, 'User Details', user)
         } catch (error) {
             this.logger.error('Error in self method', error)
