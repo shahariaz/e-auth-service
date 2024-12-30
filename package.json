@@ -14,7 +14,7 @@
         "test": "cross-env NODE_ENV=test jest --watch --runInBand",
         "typeorm": "typeorm-ts-node-commonjs",
         "migration:generate": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:generate -d src/config/data-source.ts",
-        "migration:run": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:run -d src/config/data-source.ts",
+        "migration:run": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:run -d src/config/data-source.ts ",
         "migration:create": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:create",
         "migration:revert": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:revert -d src/config/data-source.ts",
         "migration:show": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:show -d src/config/data-source.ts",
