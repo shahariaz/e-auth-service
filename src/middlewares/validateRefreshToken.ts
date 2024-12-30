@@ -13,10 +13,16 @@ export default expressjwt({
     algorithms: ['HS256'],
     getToken(req: Request) {
         const { refreshToken } = req.cookies as AuthCookie
+        logger.debug('New request to logout a user', {
+            token: refreshToken
+        })
         return refreshToken
     },
     async isRevoked(_req: Request, token?: Jwt): Promise<boolean> {
         try {
+            logger.debug('New request to logout a user', {
+                token: token
+            })
             if (!token || typeof token.payload !== 'object' || !('id' in token.payload) || !('sub' in token.payload)) {
                 return true // Assume revoked if token is invalid
             }

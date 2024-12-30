@@ -53,10 +53,10 @@ export class TokenService {
         }
         return store()
     }
-    deleteRefreshToken(id: string) {
+    deleteRefreshToken(id: number) {
         const deleteToken = async () => {
             const refreshRepo = AppDataSource.getRepository(RefreshToken)
-            await refreshRepo.delete({ id: Number(id) })
+            await refreshRepo.delete({ id: id })
         }
         return deleteToken()
     }

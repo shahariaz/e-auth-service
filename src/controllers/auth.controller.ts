@@ -15,6 +15,30 @@ export class Auth {
         this.userService = userService
         this.logger = logger
     }
+    private setAccessToken_And_refreshTokenCookie(res: Response, next: NextFunction, accessToken: string, refreshToken: string) {
+        try {
+            res.cookie('accessToken', accessToken, {
+                domain: 'localhost',
+                path: '/',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+
+            res.cookie('refreshToken', refreshToken, {
+                domain: 'localhost',
+                path: '/',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+        } catch (error) {
+            this.logger.error('Error in setAccessToken_And_refreshTokenCookie method', error)
+            next(error)
+        }
+    }
 
     public async register(req: RegisterUserRequest, res: Response, next: NextFunction) {
         try {
@@ -42,24 +66,8 @@ export class Auth {
             const accessToken = this.tokenService.generateAccessToken(payload)
             const newRefreshToken = await this.tokenService.presistRefreshToken(user)
             const refreshToken = this.tokenService.genarateRefreshToken({ ...payload, id: newRefreshToken.id })
-
-            res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
-                path: '/',
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production'
-            })
-
-            res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
-                path: '/',
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production'
-            })
+            // Set the access token and refresh token in the cookie
+            this.setAccessToken_And_refreshTokenCookie(res, next, accessToken, refreshToken)
             this.logger.info('User has been Registerd ', { id: user.id })
 
             httpResponse(req, res, 201, 'User Registered Successfully', { ...user, password: undefined })
@@ -95,22 +103,8 @@ export class Auth {
             const accessToken = this.tokenService.generateAccessToken(payload)
             const newRefreshToken = await this.tokenService.presistRefreshToken(user)
             const refreshToken = this.tokenService.genarateRefreshToken({ ...payload, id: newRefreshToken.id })
-            res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60,
-                httpOnly: true
-            })
-            res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true
-            })
+            // Set the access token and refresh token in the cookie
+            this.setAccessToken_And_refreshTokenCookie(res, next, accessToken, refreshToken)
             this.logger.info('User has been logged in', { id: user.id })
             httpResponse(req, res, 200, 'User Logged In Successfully', { ...user, password: undefined })
         } catch (error) {
@@ -141,26 +135,11 @@ export class Auth {
             const accessToken = this.tokenService.generateAccessToken(payload)
             const newRefreshToken = await this.tokenService.presistRefreshToken(user)
             //Deleting the old refresh token from the database
-            await this.tokenService.deleteRefreshToken(req.auth.id!)
+            await this.tokenService.deleteRefreshToken(Number(req.auth.id!))
             const refreshToken = this.tokenService.genarateRefreshToken({ ...payload, id: newRefreshToken.id })
 
-            res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
-                path: '/',
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production'
-            })
-
-            res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
-                path: '/',
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production'
-            })
+            // Set the access token and refresh token in the cookie
+            this.setAccessToken_And_refreshTokenCookie(res, next, accessToken, refreshToken)
             this.logger.info('Refresh Token Has Been Verfied ', { id: req.auth.sub })
             const response = {
                 UserId: req.auth.sub
@@ -168,6 +147,36 @@ export class Auth {
             httpResponse(req, res, 201, 'New AcessToken Genarated Successfully', response)
         } catch (error) {
             this.logger.error('Error in refresh method controller', error)
+            next(error)
+        }
+    }
+    public async logout(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            if (isNaN(Number(req.auth.id))) {
+                return httpResponse(req, res, 400, 'Invalid User Id')
+            }
+            const auth = req.auth
+
+            await this.tokenService.deleteRefreshToken(Number(auth.id))
+
+            res.clearCookie('accessToken', {
+                domain: 'localhost',
+                path: '/',
+                sameSite: 'strict',
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+            res.clearCookie('refreshToken', {
+                domain: 'localhost',
+                path: '/',
+                sameSite: 'strict',
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+            this.logger.info('User has been logged out', { id: req.auth.sub })
+            httpResponse(req, res, 200, 'User Logged Out Successfully')
+        } catch (error) {
+            this.logger.error('Error in logout method', error)
             next(error)
         }
     }
