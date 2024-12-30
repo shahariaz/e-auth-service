@@ -11,6 +11,7 @@ import { TokenService } from '../services/TokenService'
 import loginValidator from '../validators/login-validator'
 import authenticate from '../middlewares/authenticate'
 import { AuthRequest } from '../types/interface'
+import validateRefreshToken from '../middlewares/validateRefreshToken'
 const router = express.Router()
 const userRepository = AppDataSource.getRepository(User)
 const userService = new UserService(userRepository, logger)
@@ -20,3 +21,4 @@ router.post('/register', registerValidator, (req: Request, res: Response, next: 
 export default router
 router.post('/login', loginValidator, (req: Request, res: Response, next: NextFunction) => auth.Login(req, res, next))
 router.get('/self', authenticate, (req: Request, res: Response, next: NextFunction) => auth.self(req as AuthRequest, res, next))
+router.post('/refresh', validateRefreshToken, (req: Request, res: Response, next: NextFunction) => auth.refresh(req as AuthRequest, res, next))

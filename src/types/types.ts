@@ -22,3 +22,7 @@ export type THttpErrorResponse = {
     data: unknown
     trace?: object | null
 }
+export type AuthCookie = {
+    accessToken: string
+    refreshToken: string
+}

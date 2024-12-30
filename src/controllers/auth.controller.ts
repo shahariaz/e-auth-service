@@ -131,4 +131,44 @@ export class Auth {
             next(error)
         }
     }
+    public async refresh(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            const payload = {
+                sub: req.auth.sub,
+                role: req.auth.role
+            }
+            const user = await this.userService.findById(Number(req.auth.sub))
+            const accessToken = this.tokenService.generateAccessToken(payload)
+            const newRefreshToken = await this.tokenService.presistRefreshToken(user)
+            //Deleting the old refresh token from the database
+            await this.tokenService.deleteRefreshToken(req.auth.id!)
+            const refreshToken = this.tokenService.genarateRefreshToken({ ...payload, id: newRefreshToken.id })
+
+            res.cookie('accessToken', accessToken, {
+                domain: 'localhost',
+                path: '/',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+
+            res.cookie('refreshToken', refreshToken, {
+                domain: 'localhost',
+                path: '/',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            })
+            this.logger.info('Refresh Token Has Been Verfied ', { id: req.auth.sub })
+            const response = {
+                UserId: req.auth.sub
+            }
+            httpResponse(req, res, 201, 'New AcessToken Genarated Successfully', response)
+        } catch (error) {
+            this.logger.error('Error in refresh method controller', error)
+            next(error)
+        }
+    }
 }
