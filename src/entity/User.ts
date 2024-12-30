@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm'
 import { UserRole } from '../types/interface'
 
 @Entity()
@@ -21,4 +21,8 @@ export class User {
         default: UserRole.CUSTOMER
     })
     role: UserRole
+    @UpdateDateColumn()
+    updatedAt: number
+    @CreateDateColumn()
+    createdAt: number
 }
