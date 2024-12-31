@@ -1,7 +1,12 @@
 import { NextFunction, Request } from 'express'
 import errorObject from './errorObject'
 
-export default (nextFunc: NextFunction, err: Error, req: Request, errorSatausCode: number = 500) => {
+interface CustomError extends Error {
+    status?: number
+}
+
+export default (nextFunc: NextFunction, err: CustomError, req: Request, errorSatausCode: number) => {
+    errorSatausCode = errorSatausCode || err.status || 500
     const errorObj = errorObject(err, req, errorSatausCode)
     nextFunc(errorObj)
 }

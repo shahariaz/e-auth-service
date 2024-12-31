@@ -20,4 +20,8 @@ interface AuthRequest extends Request {
         id?: string
     }
 }
+export interface ITenant {
+    name: string
+    address: string
+}
 export { RegisterUserRequest, UserData, AuthRequest }

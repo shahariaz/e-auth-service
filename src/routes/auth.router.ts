@@ -4,7 +4,6 @@ import { UserService } from '../services/UserService'
 import { AppDataSource } from '../config/data-source'
 import { User } from '../entity/User'
 import logger from '../config/logger'
-
 import { NextFunction, Response, Request } from 'express'
 import registerValidator from '../validators/register-validator'
 import { TokenService } from '../services/TokenService'
