@@ -67,6 +67,27 @@ describe('Post tenant/crete', () => {
             expect(tenant[0].updatedAt).toBeTruthy()
             expect(tenant[0].createdAt).toBeTruthy()
         })
+        it('should return 403 if user not an admin', async () => {
+            // Arrange
+            const tenantData = {
+                name: 'Test Tenant',
+                address: 'Test Address'
+            }
+            const accessToken = jwks.token({
+                sub: '20',
+                role: Roles.CUSTOMER
+            })
+            // Act
+            const response = await request(app as any)
+                .post('/tenant/create')
+                .set('Cookie', [`accessToken=${accessToken}`])
+                .send(tenantData)
+            // Assert
+            expect(response.status).toBe(403)
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await tenantRepo.find()
+            expect(tenant).toHaveLength(0)
+        })
         it('should return 401 if user is not authenticated', async () => {
             // Arrange
             const tenantData = {
