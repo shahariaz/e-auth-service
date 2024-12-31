@@ -80,4 +80,25 @@ export class TenantController {
             this.logger.error('Error in deleteById method', error)
         }
     }
+    async updateById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+            const { name, address } = req.body as ITenant
+            this.logger.debug('name,address', name, address)
+
+            const tenant = await this.tenantService.updateById(Number(id), { name, address })
+            if (!tenant) {
+                return httpResponse(req, res, 404, 'Tenant not found')
+            }
+            httpResponse(req, res, 200, 'Tenant updated', tenant)
+            this.logger.info('Tenant updated', { id })
+        } catch (error) {
+            if (error instanceof Error) {
+                {
+                    httpError(next, error, req, 500)
+                }
+            }
+            this.logger.error('Error in updateById method', error)
+        }
+    }
 }

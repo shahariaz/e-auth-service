@@ -28,5 +28,8 @@ router.get('/get-tenent/:id', authenticate, canAcess([Roles.ADMIN]), (req: Reque
 router.delete('/delete-tenent/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
     tenant.deleteById(req, res, next)
 )
+router.patch('/update-tenent/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
+    tenant.updateById(req, res, next)
+)
 
 export default router
