@@ -42,7 +42,7 @@ export class Auth {
 
     public async register(req: RegisterUserRequest, res: Response, next: NextFunction) {
         try {
-            const { firstName, lastName, email, password, role } = req.body
+            const { firstName, lastName, email, password } = req.body
             this.logger.debug('New request to register a user', {
                 firstName,
                 lastName,
@@ -54,7 +54,7 @@ export class Auth {
                 return httpResponse(req, res, 400, 'Validation Error', result.array())
             }
 
-            const user = await this.userService.createUser({ firstName, lastName, email, password, role })
+            const user = await this.userService.createUser({ firstName, lastName, email, password })
             this.logger.info('User has been registered', { id: user.id })
 
             const payload = {

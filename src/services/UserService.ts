@@ -16,6 +16,7 @@ export class UserService {
         const user = await this.userRepository.findOne({
             where: { email }
         })
+
         if (user) {
             const error = createHttpError(400, 'User Already Exists')
             throw error
@@ -26,7 +27,7 @@ export class UserService {
 
         try {
             const user = await this.userRepository.save({ firstName, lastName, email, password: hashedPassword, role })
-
+            this.logger.info('User has been created', { id: user.id })
             return user
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {

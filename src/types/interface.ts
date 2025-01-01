@@ -1,7 +1,11 @@
 import { Request } from 'express'
 export enum UserRole {
     CUSTOMER = 'customer',
-    ADMIN = 'admin'
+    ADMIN = 'admin',
+    SUPER_ADMIN = 'super_admin',
+    MANAGER = 'manager',
+    SELLER = 'seller',
+    GUEST = 'guest'
 }
 interface UserData {
     firstName: string
@@ -23,5 +27,8 @@ interface AuthRequest extends Request {
 export interface ITenant {
     name: string
     address: string
+}
+export interface CreateUserRequest extends Request {
+    body: UserData
 }
 export { RegisterUserRequest, UserData, AuthRequest }
