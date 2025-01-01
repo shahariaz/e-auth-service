@@ -2,6 +2,7 @@
 import 'reflect-metadata'
 import express, { NextFunction, Request, Response } from 'express'
 import authRoute from './routes/auth.router'
+import userRouter from './routes/user.router'
 import tenantRoute from './routes/tenant.router'
 import logger from './config/logger'
 import globalErrorHandler from './middlewares/globalErrorHandler'
@@ -20,6 +21,7 @@ app.use(cookieParser())
 //Routes
 app.use('/auth', authRoute)
 app.use('/tenant', tenantRoute)
+app.use('/user', userRouter)
 
 // app.use(globalErrorHandler)
 app.use((err: HttpError, _req: Request, res: Response, _next: NextFunction) => {

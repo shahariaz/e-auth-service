@@ -5,5 +5,9 @@ export enum EAplicationEnvironment {
 }
 export const Roles = {
     ADMIN: 'admin',
-    CUSTOMER: 'customer'
+    CUSTOMER: 'customer',
+    SELLER: 'seller',
+    GUEST: 'guest',
+    SUPER_ADMIN: 'super_admin',
+    MANAGER: 'manager'
 } as const
