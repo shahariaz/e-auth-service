@@ -13,6 +13,7 @@ interface UserData {
     email: string
     password: string
     role?: UserRole
+    tenantId?: number
 }
 interface RegisterUserRequest extends Request {
     body: UserData

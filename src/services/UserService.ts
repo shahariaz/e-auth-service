@@ -12,7 +12,7 @@ export class UserService {
         this.userRepository = userRepository
         this.logger = logger
     }
-    async createUser({ firstName, lastName, email, password, role }: UserData) {
+    async createUser({ firstName, lastName, email, password, role, tenantId }: UserData) {
         const user = await this.userRepository.findOne({
             where: { email }
         })
@@ -26,7 +26,14 @@ export class UserService {
         const hashedPassword = await bcrypt.hash(password, saltRounds)
 
         try {
-            const user = await this.userRepository.save({ firstName, lastName, email, password: hashedPassword, role })
+            const user = await this.userRepository.save({
+                firstName,
+                lastName,
+                email,
+                password: hashedPassword,
+                role,
+                tenant: tenantId ? { id: tenantId } : undefined
+            })
             this.logger.info('User has been created', { id: user.id })
             return user
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -58,5 +65,24 @@ export class UserService {
             throw error
         }
         return user
+    }
+    async deleteUser(id: number) {
+        await this.userRepository.delete(id)
+        return true
+    }
+    async getAll() {
+        const users = await this.userRepository.find()
+        return users
+    }
+    async updateUser(id: number, data: UserData) {
+        const user = await this.userRepository.findOne({
+            where: { id }
+        })
+        if (!user) {
+            const error = createHttpError(404, 'User not found')
+            throw error
+        }
+        const updatedUser = await this.userRepository.update(id, data)
+        return updatedUser
     }
 }

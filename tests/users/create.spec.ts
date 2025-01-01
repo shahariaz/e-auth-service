@@ -39,13 +39,14 @@ describe('POST /users', () => {
         })
         //Act
         const response = await request(app)
-            .post('/users')
+            .post('/user')
             .set('Cookie', [`accessToken=${accessToken}`])
             .send(userData)
+
         //Assert
         const userRepository = connection.getRepository(User)
         const user = await userRepository.find()
-        console.log(user)
+
         expect(user).toHaveLength(1)
         expect(response.statusCode).toBe(201)
         expect(user[0].role).toBe(Roles.MANAGER)

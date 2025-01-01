@@ -1,4 +1,4 @@
 {
-    "ext": ".ts",
-    "ignore": ["dist", "node_modules/"]
+    "ext": ".ts,.js",
+    "ignore": ["node_modules/"]
 }

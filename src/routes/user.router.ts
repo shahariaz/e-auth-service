@@ -7,11 +7,22 @@ import logger from '../config/logger'
 import authenticate from '../middlewares/authenticate'
 import { canAcess } from '../middlewares/canAccess'
 import { Roles } from '../constant/application'
+import userValidator from '../validators/user-validator'
 const userRepo = AppDataSource.getRepository(User)
 const userService: UserService = new UserService(userRepo, logger)
 const userController: UserController = new UserController(userService, logger)
 const router = express.Router()
 
-router.post('/', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => userController.create(req, res, next))
+router.post('/', userValidator, authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
+    userController.create(req, res, next)
+)
+router.delete('/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
+    userController.delete(req, res, next)
+)
+router.patch('/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
+    userController.update(req, res, next)
+)
+router.get('/', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => userController.get(req, res, next))
+router.get('/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => userController.getById(req, res, next))
 
 export default router

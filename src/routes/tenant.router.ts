@@ -19,9 +19,7 @@ router.post('/', (req, res) => {
 router.post('/create', tenantValidator, authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
     tenant.createTenant(req, res, next)
 )
-router.get('/getall', tenantValidator, authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
-    tenant.getTenant(req, res, next)
-)
+router.get('/getall', tenantValidator, (req: Request, res: Response, next: NextFunction) => tenant.getTenant(req, res, next))
 router.get('/get-tenent/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
     tenant.getTenantById(req, res, next)
 )

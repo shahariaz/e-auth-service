@@ -1,5 +1,11 @@
-import dotenvflow from 'dotenv-flow'
-dotenvflow.config()
+import dotenvFlow from 'dotenv-flow'
+import path from 'path'
+
+// Configure dotenv-flow with correct path
+dotenvFlow.config({
+    path: path.resolve(process.cwd()),
+    node_env: process.env.NODE_ENV || 'development'
+})
 class Config {
     public PORT: number | undefined
     public NODE_ENV: string | undefined

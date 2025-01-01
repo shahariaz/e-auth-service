@@ -1,5 +1,4 @@
 // @ts-check
-// @ts-check
 
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
@@ -13,7 +12,7 @@ export default tseslint.config({
         }
     },
     files: ['**/*.ts'],
-    ignores: ['tests/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+    ignores: ['tests/**/*.ts', '**/*.test.ts', '**/*.spec.ts', 'dist/**/*.{js,ts}'],
     // @ts-ignore
     extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
     rules: {
