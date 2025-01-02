@@ -16,6 +16,7 @@ class Config {
     public DB_NAME: string | undefined
     public SECRET_KEY: string | undefined
     public JWKS_URI: string | undefined
+    public private_key: string | undefined
     constructor() {
         this.PORT = parseInt(process.env.PORT as string)
         this.NODE_ENV = process.env.NODE_ENV
@@ -26,6 +27,7 @@ class Config {
         this.DB_NAME = process.env.DB_NAME
         this.SECRET_KEY = process.env.SECRET_KEY
         this.JWKS_URI = process.env.JWKS_URI
+        this.private_key = process.env.PRIVATE_KEY
         this.validateConfig()
     }
     public validateConfig(): void {
