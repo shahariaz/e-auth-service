@@ -8,12 +8,20 @@ import logger from './config/logger'
 import globalErrorHandler from './middlewares/globalErrorHandler'
 import { HttpError } from 'http-errors'
 import httpResponse from './util/httpResponse'
+import cors from 'cors'
 import cookieParser from 'cookie-parser'
 const app = express()
 
 app.get('/', (_, res) => {
     httpResponse(_, res, 200, 'Hello to Auth-Services')
 })
+app.use(
+    cors({
+        origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
+    })
+)
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
