@@ -58,7 +58,10 @@ export class UserService {
     }
     async findById(id: number) {
         const user = await this.userRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: {
+                tenant: true
+            }
         })
         if (!user) {
             const error = createHttpError(404, 'User not found')
