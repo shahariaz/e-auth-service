@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 import { User } from '../entity/User'
-import { UserData } from '../types/interface'
+import { UserData, UserQueryParams } from '../types/interface'
 import createHttpError from 'http-errors'
 import { Logger } from 'winston'
 import bcrypt from 'bcrypt'
@@ -73,8 +73,13 @@ export class UserService {
         await this.userRepository.delete(id)
         return true
     }
-    async getAll() {
-        const users = await this.userRepository.find()
+    async getAll(validatedQuery: UserQueryParams) {
+        const queryBuilder = this.userRepository.createQueryBuilder()
+        const users = await queryBuilder
+            .skip((validatedQuery.currentPage! - 1) * validatedQuery.perPage!)
+            .take(validatedQuery.perPage)
+            .getManyAndCount()
+
         return users
     }
     async updateUser(id: number, data: UserData) {

@@ -8,6 +8,7 @@ import authenticate from '../middlewares/authenticate'
 import { canAcess } from '../middlewares/canAccess'
 import { Roles } from '../constant/application'
 import userValidator from '../validators/user-validator'
+import listUsersValidator from '../validators/list-users-validator'
 const userRepo = AppDataSource.getRepository(User)
 const userService: UserService = new UserService(userRepo, logger)
 const userController: UserController = new UserController(userService, logger)
@@ -22,7 +23,9 @@ router.delete('/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res:
 router.patch('/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
     userController.update(req, res, next)
 )
-router.get('/', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => userController.get(req, res, next))
+router.get('/', listUsersValidator, authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) =>
+    userController.get(req, res, next)
+)
 router.get('/:id', authenticate, canAcess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => userController.getById(req, res, next))
 
 export default router

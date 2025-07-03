@@ -32,4 +32,11 @@ export interface ITenant {
 export interface CreateUserRequest extends Request {
     body: UserData
 }
+export interface UserQueryParams {
+    perPage?: number
+    currentPage?: number
+    sortBy?: string
+    sortOrder?: 'asc' | 'desc'
+    search?: string
+}
 export { RegisterUserRequest, UserData, AuthRequest }

@@ -4,7 +4,7 @@ import { NextFunction, Response } from 'express'
 import { CreateUserRequest, UserRole } from '../types/interface'
 import httpResponse from '../util/httpResponse'
 import { Roles } from '../constant/application'
-import { validationResult } from 'express-validator'
+import { matchedData, validationResult } from 'express-validator'
 
 export class UserController {
     constructor(
@@ -80,9 +80,16 @@ export class UserController {
         }
     }
     async get(req: CreateUserRequest, res: Response, next: NextFunction) {
+        const validatedQuery = matchedData(req, { onlyValidData: true })
         try {
-            const users = await this.userService.getAll()
-            httpResponse(req, res, 200, 'Users', users)
+            const [users, count] = await this.userService.getAll(validatedQuery)
+            httpResponse(req, res, 200, 'Users', {
+                currentpage: validatedQuery.currentPage as number,
+                perPage: validatedQuery.perPage as number,
+                total: count,
+                totalPages: Math.ceil(count / (validatedQuery.perPage as number)),
+                data: users
+            })
         } catch (error) {
             if (error instanceof Error) {
                 this.logger.error('Error in get method', error)
