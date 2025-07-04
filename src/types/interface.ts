@@ -37,6 +37,7 @@ export interface UserQueryParams {
     currentPage?: number
     sortBy?: string
     sortOrder?: 'asc' | 'desc'
-    search?: string
+    q?: string
+    role?: UserRole
 }
 export { RegisterUserRequest, UserData, AuthRequest }

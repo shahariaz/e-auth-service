@@ -16,6 +16,21 @@ export default checkSchema(
                     return Number.isNaN(parsedValue) ? 10 : parsedValue
                 }
             }
+        },
+        q: {
+            trim: true,
+            customSanitizer: {
+                options: (value: unknown) => {
+                    return value ? value : ''
+                }
+            }
+        },
+        role: {
+            isIn: {
+                options: [['manager', 'admin', 'user']],
+                errorMessage: 'Role must be one of the following: manager, admin, user'
+            },
+            optional: true
         }
     },
     ['query']
